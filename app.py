@@ -263,6 +263,33 @@ JSON 格式必须严格如下：
         "exp_reward": exp_reward
     }
 
+import pandas as pd # 确保文件最上面有这行，如果没有记得加上 import pandas as pd
+
+st.divider()
+# ==========================================
+# 社交与成就系统模块 (完美扣题)
+# ==========================================
+st.markdown("### 🏆 校园运动排行榜 (同辈社交PK)")
+
+# 模拟一个排行榜数据，加入一点竞争感
+# 注意：把 st.session_state.level 替换成你代码里记录等级的那个变量名，通常我之前写的是等级
+current_level = st.session_state.get('level', 1)
+
+leaderboard_data = pd.DataFrame({
+    "排名": ["🥇 1", "🥈 2", "🥉 3", "4"],
+    "同学": ["体院-暴龙兽", "计科-卷王", "👉 你的数字宠物 (你)", "文院-摸鱼侠"],
+    "当前等级": [f"Lv.{current_level + 2}", f"Lv.{current_level + 1}", f"Lv.{current_level}", f"Lv.{current_level - 1 if current_level > 1 else 1}"],
+    "本周打卡": ["5 天", "4 天", "今日已打卡", "1 天"]
+})
+
+# 展示排行榜
+st.dataframe(leaderboard_data, hide_index=True, use_container_width=True)
+
+st.markdown("### 📢 社交裂变分享")
+# 生成诱导分享的文案（产品运营思维）
+share_text = f"「我的专属 AI 运动宠物已经达到 Lv.{current_level} 啦！今天我用汗水喂饱了它，快来点击链接一起云养宠，看看谁的宠物进化得更快吧！」"
+st.info(share_text)
+st.button("🔗 一键复制分享文案到朋友圈 / 微信群") # 模拟分享按钮，展示交互意图
 
 def add_exp(exp_reward: int) -> bool:
     """
@@ -271,7 +298,7 @@ def add_exp(exp_reward: int) -> bool:
 
     重点：
     - 初始 Lv1。
-    - EXP 达到 30 后立刻升到 Lv2。
+    - EXP 达到 100 后立刻升到 Lv2。
     - 升到 Lv2 就会触发特效。
     """
     old_level = st.session_state.level
